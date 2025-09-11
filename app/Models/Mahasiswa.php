@@ -9,8 +9,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Mahasiswa extends Model
 {
-    /** @use HasFactory<\Database\Factories\MahasiswaFactory> */
     use HasFactory, SoftDeletes;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function beasiswas(): BelongsToMany
     {
