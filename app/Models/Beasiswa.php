@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Mahasiswa extends Model
+class Beasiswa extends Model
 {
-    /** @use HasFactory<\Database\Factories\MahasiswaFactory> */
+    /** @use HasFactory<\Database\Factories\BeasiswaFactory> */
     use HasFactory;
 
-    public function beasiswas(): BelongsToMany
+    public function mahasiswas(): BelongsToMany
     {
-        return $this->belongsToMany(BeasiswaMahasiswa::class, 'beasiswa_mahasiswa')
+        return $this->belongsToMany(Mahasiswa::class, 'beasiswa_mahasiswa')
             ->withPivot('tahun_penerimaan')
             ->withTimestamps();
     }
