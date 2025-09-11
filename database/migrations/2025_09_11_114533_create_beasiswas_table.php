@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('periode'); // e.g., '2025/2026'
             $table->text('deskripsi')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
