@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,26 @@ class MahasiswaFactory extends Factory
      */
     public function definition(): array
     {
+        $fakultasDanProdi = [
+            'Fakultas Tarbiyah dan Ilmu Keguruan' => ['Pendidikan Agama Islam', 'Manajemen Pendidikan Islam', 'Pendidikan Bahasa Arab'],
+            'Fakultas Syariah' => ['Hukum Keluarga Islam', 'Hukum Ekonomi Syariah'],
+            'Fakultas Ushuluddin, Adab, dan Dakwah' => ['Ilmu Al-Qur\'an dan Tafsir', 'Komunikasi dan Penyiaran Islam', 'Bimbingan dan Konseling Islam'],
+            'Fakultas Ekonomi dan Bisnis Islam' => ['Ekonomi Syariah', 'Perbankan Syariah', 'Manajemen Bisnis Syariah'],
+        ];
+
+        $fakultas = $this->faker->randomElement(array_keys($fakultasDanProdi));
+        $prodi = $this->faker->randomElement($fakultasDanProdi[$fakultas]);
+
         return [
-            //
+            'user_id' => User::factory(),
+            'nama' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'no_hp' => $this->faker->phoneNumber(),
+            'prodi' => $prodi,
+            'fakultas' => $fakultas,
+            'angkatan' => $this->faker->numberBetween(2020, 2024),
+            'ip' => $this->faker->randomFloat(2, 3.00, 4.00),
+            'ipk' => $this->faker->randomFloat(2, 3.00, 4.00),
         ];
     }
 }

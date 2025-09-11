@@ -11,6 +11,8 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements HasName
 {
+    use HasFactory, Notifiable;
+
     protected $fillable = [
         'name',
         'nim',
