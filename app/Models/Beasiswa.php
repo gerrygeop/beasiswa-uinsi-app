@@ -12,6 +12,15 @@ class Beasiswa extends Model
     /** @use HasFactory<\Database\Factories\BeasiswaFactory> */
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'nama_beasiswa',
+        'jenis_beasiswa',
+        'lembaga_penyelenggara',
+        'besar_beasiswa',
+        'periode',
+        'deskripsi',
+    ];
+
     public function mahasiswas(): BelongsToMany
     {
         return $this->belongsToMany(Mahasiswa::class, 'beasiswa_mahasiswa')
