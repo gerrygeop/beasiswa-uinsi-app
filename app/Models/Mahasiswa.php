@@ -11,6 +11,18 @@ class Mahasiswa extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'user_id',
+        'nama',
+        'email',
+        'no_hp',
+        'prodi',
+        'fakultas',
+        'angkatan',
+        'ip',
+        'ipk',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

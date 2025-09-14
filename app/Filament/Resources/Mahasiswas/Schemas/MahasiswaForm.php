@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\Mahasiswas\Schemas;
 
+use App\Models\Mahasiswa;
 use App\Models\User;
 use Filament\Forms\Components;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
+use Illuminate\Support\Facades\Hash;
 
 class MahasiswaForm
 {
@@ -13,24 +15,48 @@ class MahasiswaForm
     {
         return $schema
             ->components([
-                Section::make()
+                Section::make('Akun Mahasiswa')
                     ->schema([
-                        Components\Select::make('user_id')
-                            ->options(User::query()->pluck('nim', 'id')->except(auth()->id()))
+                        Components\TextInput::make('nim')
                             ->label('NIM')
-                            ->searchable()
+                            ->numeric()
+                            ->unique(
+                                table: User::class,
+                                column: 'nim',
+                                ignorable: fn(?Mahasiswa $record): ?User => $record?->user,
+                            )
                             ->required(),
 
+                        Components\TextInput::make('password')
+                            ->password()
+                            ->revealable()
+                            ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
+                            ->dehydrated(fn(?string $state): bool => filled($state))
+                            ->required(fn(string $operation): bool => $operation === 'create')
+                            ->minLength(8)
+                            ->maxLength(255)
+                    ])
+                    ->columns(2)
+                    ->columnSpanFull(),
+
+                Section::make('Data Diri Mahasiswa')
+                    ->schema([
                         Components\TextInput::make('nama')
-                            ->required(),
+                            ->required()
+                            ->maxLength(255),
 
                         Components\TextInput::make('email')
-                            ->label('Email address')
                             ->email()
-                            ->required(),
+                            ->required()
+                            ->maxLength(255),
 
                         Components\TextInput::make('no_hp')
-                            ->required(),
+                            ->tel()
+                            ->required()
+                            ->regex('/^(\+62|62|0)8[0-9]{8,12}$/')
+                            ->validationMessages([
+                                'regex' => 'Format nomor HP tidak valid. Contoh: 081234567890',
+                            ]),
 
                         Components\TextInput::make('prodi')
                             ->required(),
@@ -39,13 +65,22 @@ class MahasiswaForm
                             ->required(),
 
                         Components\TextInput::make('angkatan')
+                            ->numeric()
                             ->required(),
 
                         Components\TextInput::make('ip')
-                            ->required(),
+                            ->label('IP')
+                            ->numeric()
+                            ->required()
+                            ->minValue(0)
+                            ->maxValue(4),
 
                         Components\TextInput::make('ipk')
-                            ->required(),
+                            ->label('IPK')
+                            ->numeric()
+                            ->required()
+                            ->minValue(0)
+                            ->maxValue(4),
                     ])
                     ->columns(2)
                     ->columnSpanFull()

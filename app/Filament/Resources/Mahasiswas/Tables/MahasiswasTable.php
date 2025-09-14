@@ -20,7 +20,6 @@ class MahasiswasTable
             ->columns([
                 TextColumn::make('user.nim')
                     ->label('NIM')
-                    ->numeric()
                     ->sortable()
                     ->searchable(),
 
@@ -32,7 +31,6 @@ class MahasiswasTable
                     ->searchable(),
 
                 TextColumn::make('no_hp')
-                    ->numeric()
                     ->searchable(),
 
                 TextColumn::make('prodi')
