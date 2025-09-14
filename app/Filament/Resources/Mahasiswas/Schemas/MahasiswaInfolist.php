@@ -26,9 +26,11 @@ class MahasiswaInfolist
                         TextEntry::make('angkatan'),
                         TextEntry::make('ip')
                             ->label('IP')
-                            ->numeric(),
+                            ->badge()
+                            ->color('info'),
                         TextEntry::make('ipk')
-                            ->label('IPK'),
+                            ->label('IPK')
+                            ->badge(),
                     ])
                     ->columns(2)
                     ->columnSpan(2),

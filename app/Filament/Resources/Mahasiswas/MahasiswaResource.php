@@ -11,6 +11,7 @@ use App\Filament\Resources\Mahasiswas\Schemas\MahasiswaInfolist;
 use App\Filament\Resources\Mahasiswas\Tables\MahasiswasTable;
 use App\Models\Mahasiswa;
 use BackedEnum;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -22,7 +23,7 @@ class MahasiswaResource extends Resource
 {
     protected static ?string $model = Mahasiswa::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
 
     protected static ?string $recordTitleAttribute = 'nama';
 
@@ -44,7 +45,7 @@ class MahasiswaResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\BeasiswasRelationManager::class,
         ];
     }
 
