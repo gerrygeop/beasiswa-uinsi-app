@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Beasiswa;
+use App\Models\Mahasiswa;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -38,5 +40,22 @@ class MahasiswaFactory extends Factory
             'ip' => $this->faker->randomFloat(2, 3.00, 4.00),
             'ipk' => $this->faker->randomFloat(2, 3.00, 4.00),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Mahasiswa $mahasiswa) {
+            // berikan role 'mahasiswa'.
+            $mahasiswa->user->assignRole('mahasiswa');
+
+            $beasiswasToAttach = Beasiswa::inRandomOrder()->limit($this->faker->numberBetween(1, 3))->get();
+
+            // Lampirkan beasiswa ke mahasiswa dengan data pivot tambahan
+            foreach ($beasiswasToAttach as $beasiswa) {
+                $mahasiswa->beasiswas()->attach($beasiswa->id, [
+                    'tahun_penerimaan' => $this->faker->numberBetween(2021, 2025),
+                ]);
+            }
+        });
     }
 }

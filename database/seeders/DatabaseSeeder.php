@@ -15,14 +15,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call([
+            RolesAndPermissionsSeeder::class,
+        ]);
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $admin = User::factory()->create([
+            'name' => 'Admin',
+            'nim' => '0000001',
+        ]);
 
-        Mahasiswa::factory(50)->create();
+        $admin->assignRole('admin');
+
+        $stafUser = User::factory()->create([
+            'name' => 'Staf Akademik',
+            'nim' => '0000002',
+        ]);
+        $stafUser->assignRole('staf');
+
         Beasiswa::factory(20)->create();
+        Mahasiswa::factory(50)->create();
     }
 }

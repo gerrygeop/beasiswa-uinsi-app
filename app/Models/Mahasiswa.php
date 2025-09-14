@@ -30,7 +30,7 @@ class Mahasiswa extends Model
 
     public function beasiswas(): BelongsToMany
     {
-        return $this->belongsToMany(BeasiswaMahasiswa::class, 'beasiswa_mahasiswa')
+        return $this->belongsToMany(Beasiswa::class, 'beasiswa_mahasiswa')
             ->withPivot('tahun_penerimaan')
             ->withTimestamps();
     }
