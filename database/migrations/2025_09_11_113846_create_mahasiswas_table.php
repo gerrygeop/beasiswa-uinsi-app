@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('prodi');
             $table->string('fakultas');
             $table->string('angkatan');
-            $table->string('ip');
-            $table->string('ipk');
+            $table->decimal('ip');
+            $table->decimal('ipk');
             $table->timestamps();
             $table->softDeletes();
         });
