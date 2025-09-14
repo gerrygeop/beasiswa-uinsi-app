@@ -22,13 +22,16 @@ class CreateMahasiswa extends CreateRecord
                     'password' => $data['password'], // Password sudah di-hash oleh form
                 ]);
 
-                // 2. Hapus data yang tidak ada di tabel mahasiswas
+                // Berikan role 'mahasiswa'
+                $user->assignRole('mahasiswa');
+
+                // Hapus data yang tidak ada di tabel mahasiswas
                 unset($data['nim'], $data['password']);
 
-                // 3. Tambahkan user_id dari user yang baru dibuat
+                // Tambahkan user_id dari user yang baru dibuat
                 $data['user_id'] = $user->id;
 
-                // 4. Buat record Mahasiswa dengan data yang sudah disiapkan
+                // Buat record Mahasiswa dengan data yang sudah disiapkan
                 return static::getModel()::create($data);
             });
         } catch (\Exception $e) {

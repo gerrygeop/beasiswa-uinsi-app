@@ -65,4 +65,25 @@ class BeasiswaResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+
+        // Jika user adalah admin atau staf, tampilkan semua beasiswa.
+        if ($user->hasAnyRole(['admin', 'staf'])) {
+            return parent::getEloquentQuery();
+        }
+
+        // Jika user adalah mahasiswa...
+        if ($user->hasRole('mahasiswa')) {
+            // ...hanya tampilkan beasiswa yang memiliki relasi dengan profil mahasiswanya.
+            return parent::getEloquentQuery()->whereHas('mahasiswas', function (Builder $query) use ($user) {
+                $query->where('user_id', $user->id);
+            });
+        }
+
+        // Jika tidak memiliki role di atas, jangan tampilkan apa-apa.
+        return parent::getEloquentQuery()->whereRaw('1 = 0');
+    }
 }
