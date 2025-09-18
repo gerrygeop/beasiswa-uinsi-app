@@ -2,12 +2,8 @@
 
 namespace App\Filament\Resources\Beasiswas\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
-use Filament\Actions\ViewAction;
+use App\Filament\Exports\BeasiswaExporter;
+use Filament\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
@@ -60,16 +56,22 @@ class BeasiswasTable
                         'tidak mampu' => 'Tidak mampu',
                     ]),
             ])
+            ->headerActions([
+                Actions\ExportAction::make()
+                    ->exporter(BeasiswaExporter::class),
+            ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                Actions\ViewAction::make(),
+                Actions\EditAction::make(),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
+                    Actions\ForceDeleteBulkAction::make(),
+                    Actions\RestoreBulkAction::make(),
                 ]),
+                Actions\ExportBulkAction::make()
+                    ->exporter(BeasiswaExporter::class),
             ]);
     }
 }

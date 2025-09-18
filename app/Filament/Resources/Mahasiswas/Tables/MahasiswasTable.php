@@ -2,13 +2,9 @@
 
 namespace App\Filament\Resources\Mahasiswas\Tables;
 
+use App\Filament\Exports\MahasiswaExporter;
 use App\Models\Mahasiswa;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
-use Filament\Actions\ViewAction;
+use Filament\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
@@ -80,15 +76,21 @@ class MahasiswasTable
                 )->label('Prodi'),
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                Actions\ViewAction::make(),
+                Actions\EditAction::make(),
+            ])
+            ->headerActions([
+                Actions\ExportAction::make()
+                    ->exporter(MahasiswaExporter::class),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
+                    Actions\ForceDeleteBulkAction::make(),
+                    Actions\RestoreBulkAction::make(),
                 ]),
+                Actions\ExportBulkAction::make()
+                    ->exporter(MahasiswaExporter::class),
             ]);
     }
 }
