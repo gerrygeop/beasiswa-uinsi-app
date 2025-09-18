@@ -11,16 +11,30 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('kategori', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_kategori')->unique();
+            $table->text('deskripsi')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('beasiswas', function (Blueprint $table) {
             $table->id();
             $table->string('nama_beasiswa');
-            $table->string('jenis_beasiswa'); // e.g., 'prestasi', 'umum', 'tidak mampu'
             $table->string('lembaga_penyelenggara');
             $table->unsignedInteger('besar_beasiswa'); // in Rupiah
             $table->string('periode'); // e.g., '2025/2026'
             $table->text('deskripsi')->nullable();
             $table->timestamps();
             $table->softDeletes();
+        });
+
+        Schema::create('beasiswa_kategori', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('beasiswa_id')->constrained('beasiswas')->cascadeOnDelete();
+            $table->foreignId('kategori_id')->constrained('kategori')->cascadeOnDelete();
+            $table->timestamps();
         });
     }
 
@@ -29,6 +43,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('beasiswa_kategori');
+        Schema::dropIfExists('kategori');
         Schema::dropIfExists('beasiswas');
     }
 };

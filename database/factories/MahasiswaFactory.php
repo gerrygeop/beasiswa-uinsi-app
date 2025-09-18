@@ -33,10 +33,13 @@ class MahasiswaFactory extends Factory
             'user_id' => User::factory(),
             'nama' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
+            'ttl' => $this->faker->date('Y-m-d', '2005-01-01'), // Tambahan untuk 'ttl'
             'no_hp' => $this->faker->phoneNumber(),
             'prodi' => $prodi,
             'fakultas' => $fakultas,
             'angkatan' => $this->faker->numberBetween(2020, 2024),
+            'sks' => $this->faker->numberBetween(20, 100), // Tambahan untuk 'sks'
+            'semester' => $this->faker->numberBetween(1, 8), // Tambahan untuk 'semester'
             'ip' => $this->faker->randomFloat(2, 3.00, 4.00),
             'ipk' => $this->faker->randomFloat(2, 3.00, 4.00),
         ];
@@ -53,7 +56,7 @@ class MahasiswaFactory extends Factory
             // Lampirkan beasiswa ke mahasiswa dengan data pivot tambahan
             foreach ($beasiswasToAttach as $beasiswa) {
                 $mahasiswa->beasiswas()->attach($beasiswa->id, [
-                    'tahun_penerimaan' => $this->faker->numberBetween(2021, 2025),
+                    'tanggal_penerimaan' => $this->faker->numberBetween(2021, 2025),
                 ]);
             }
         });

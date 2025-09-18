@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('mahasiswa_id')->constrained('mahasiswas')->onDelete('cascade');
             $table->foreignId('beasiswa_id')->constrained('beasiswas')->onDelete('cascade');
-            $table->string('tahun_penerimaan');
+            $table->date('tanggal_penerimaan');
+            $table->enum('status', ['menunggu_verifikasi', 'lolos_verifikasi', 'ditolak', 'diterima'])->default('menunggu_verifikasi');
             $table->timestamps();
         });
     }

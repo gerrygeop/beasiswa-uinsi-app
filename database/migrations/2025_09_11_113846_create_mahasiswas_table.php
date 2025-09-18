@@ -16,12 +16,15 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('nama');
             $table->string('email')->unique();
+            $table->string('ttl');
             $table->string('no_hp');
             $table->string('prodi');
             $table->string('fakultas');
             $table->string('angkatan');
-            $table->decimal('ip');
-            $table->decimal('ipk');
+            $table->decimal('sks');
+            $table->string('semester');
+            $table->decimal('ip', 4, 2);
+            $table->decimal('ipk', 4, 2);
             $table->timestamps();
             $table->softDeletes();
         });
