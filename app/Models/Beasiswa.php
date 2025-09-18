@@ -12,19 +12,18 @@ class Beasiswa extends Model
     /** @use HasFactory<\Database\Factories\BeasiswaFactory> */
     use HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'nama_beasiswa',
-        'jenis_beasiswa',
-        'lembaga_penyelenggara',
-        'besar_beasiswa',
-        'periode',
-        'deskripsi',
-    ];
+    protected $guarded = ['id'];
 
     public function mahasiswas(): BelongsToMany
     {
         return $this->belongsToMany(Mahasiswa::class, 'beasiswa_mahasiswa')
-            ->withPivot('tahun_penerimaan')
+            ->withPivot(['tanggal_penerimaan', 'status'])
+            ->withTimestamps();
+    }
+
+    public function kategori(): BelongsToMany
+    {
+        return $this->belongsToMany(Kategori::class, 'beasiswa_kategori')
             ->withTimestamps();
     }
 }

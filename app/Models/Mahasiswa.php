@@ -11,17 +11,7 @@ class Mahasiswa extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'user_id',
-        'nama',
-        'email',
-        'no_hp',
-        'prodi',
-        'fakultas',
-        'angkatan',
-        'ip',
-        'ipk',
-    ];
+    protected $guarded = ['id'];
 
     public function user()
     {
@@ -31,7 +21,7 @@ class Mahasiswa extends Model
     public function beasiswas(): BelongsToMany
     {
         return $this->belongsToMany(Beasiswa::class, 'beasiswa_mahasiswa')
-            ->withPivot('tahun_penerimaan')
+            ->withPivot(['tanggal_penerimaan', 'status'])
             ->withTimestamps();
     }
 }
