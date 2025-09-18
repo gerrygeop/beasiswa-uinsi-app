@@ -6,6 +6,7 @@ use App\Filament\Resources\Beasiswas\Pages\CreateBeasiswa;
 use App\Filament\Resources\Beasiswas\Pages\EditBeasiswa;
 use App\Filament\Resources\Beasiswas\Pages\ListBeasiswas;
 use App\Filament\Resources\Beasiswas\Pages\ViewBeasiswa;
+use App\Filament\Resources\Beasiswas\RelationManagers\MahasiswasRelationManager;
 use App\Filament\Resources\Beasiswas\Schemas\BeasiswaForm;
 use App\Filament\Resources\Beasiswas\Schemas\BeasiswaInfolist;
 use App\Filament\Resources\Beasiswas\Tables\BeasiswasTable;
@@ -44,7 +45,7 @@ class BeasiswaResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            MahasiswasRelationManager::class,
         ];
     }
 
