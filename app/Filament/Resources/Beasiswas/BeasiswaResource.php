@@ -78,10 +78,21 @@ class BeasiswaResource extends Resource
 
         // Jika user adalah mahasiswa...
         if ($user->hasRole('mahasiswa')) {
-            // ...hanya tampilkan beasiswa yang memiliki relasi dengan profil mahasiswanya.
-            return parent::getEloquentQuery()->whereHas('mahasiswas', function (Builder $query) use ($user) {
-                $query->where('user_id', $user->id);
-            });
+            $mahasiswaId = $user->mahasiswa?->id;
+
+            if ($mahasiswaId) {
+                return parent::getEloquentQuery()
+                    ->whereHas('mahasiswas', function (Builder $query) use ($mahasiswaId) {
+                        $query->where('mahasiswas.id', $mahasiswaId);
+                    })
+                    ->with(['mahasiswas' => function ($query) use ($mahasiswaId) {
+                        $query->where('mahasiswas.id', $mahasiswaId)
+                            ->select('mahasiswas.id')
+                            ->withPivot('status');
+                    }]);
+            }
+
+            return parent::getEloquentQuery()->whereRaw('1 = 0');
         }
 
         // Jika tidak memiliki role di atas, jangan tampilkan apa-apa.

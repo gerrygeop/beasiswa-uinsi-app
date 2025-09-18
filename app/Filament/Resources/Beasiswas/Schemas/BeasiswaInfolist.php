@@ -22,6 +22,12 @@ class BeasiswaInfolist
                             ->numeric()
                             ->money('idr'),
                         TextEntry::make('periode'),
+
+                        TextEntry::make('mahasiswas.0.pivot.status')
+                            ->label('Status')
+                            ->badge()
+                            ->visible(fn() => auth()->user()->hasRole('mahasiswa')),
+
                         TextEntry::make('deskripsi')
                             ->placeholder('-')
                             ->columnSpanFull(),

@@ -46,6 +46,15 @@ class BeasiswasRelationManager extends RelationManager
                         Components\TextInput::make('periode')
                             ->required(),
 
+                        Components\Select::make('status')
+                            ->options([
+                                'menunggu_verifikasi' => 'menunggu_verifikasi',
+                                'lolos_verifikasi' => 'lolos_verifikasi',
+                                'ditolak' => 'ditolak',
+                                'diterima' => 'diterima',
+                            ])
+                            ->visible(fn() => auth()->user()->hasAnyRole(['admin', 'staf'])),
+
                         Components\Textarea::make('deskripsi')
                             ->columnSpanFull(),
                     ])
@@ -66,6 +75,18 @@ class BeasiswasRelationManager extends RelationManager
                         TextEntry::make('besar_beasiswa')
                             ->numeric(),
                         TextEntry::make('periode'),
+
+                        TextEntry::make('status')
+                            ->label('Status')
+                            ->badge()
+                            ->getStateUsing(function ($record) {
+                                $userId = auth()->id();
+
+                                return $record->mahasiswas
+                                    ->where('id', $userId)
+                                    ->first()?->pivot?->status ?? '-';
+                            }),
+
                         TextEntry::make('deskripsi')
                             ->placeholder('-')
                             ->columnSpanFull(),
@@ -110,6 +131,18 @@ class BeasiswasRelationManager extends RelationManager
                     ->sortable(),
 
                 TextColumn::make('periode')
+                    ->searchable(),
+
+                TextColumn::make('mahasiswas')
+                    ->badge()
+                    ->getStateUsing(function ($record) {
+                        $userId = auth()->id();
+
+                        // ambil status dari pivot untuk user login
+                        return $record->mahasiswas
+                            ->where('id', $userId)
+                            ->first()?->pivot?->status ?? '-';
+                    })
                     ->searchable(),
 
                 TextColumn::make('created_at')

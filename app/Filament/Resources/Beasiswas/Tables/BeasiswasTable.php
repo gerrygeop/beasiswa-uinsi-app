@@ -33,6 +33,12 @@ class BeasiswasTable
                 TextColumn::make('periode')
                     ->searchable(),
 
+                TextColumn::make('mahasiswas.0.pivot.status')
+                    ->label('Status')
+                    ->badge()
+                    ->searchable()
+                    ->visible(fn() => auth()->user()->hasRole('mahasiswa')),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -4,11 +4,13 @@ namespace App\Filament\Resources\Beasiswas\RelationManagers;
 
 use App\Models\Mahasiswa;
 use Filament\Actions;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
@@ -54,6 +56,15 @@ class MahasiswasRelationManager extends RelationManager
                 TextInput::make('ipk')
                     ->required()
                     ->numeric(),
+
+                Select::make('status')
+                    ->options([
+                        'menunggu_verifikasi' => 'menunggu_verifikasi',
+                        'lolos_verifikasi' => 'lolos_verifikasi',
+                        'ditolak' => 'ditolak',
+                        'diterima' => 'diterima',
+                    ])
+                    ->visible(fn() => auth()->user()->hasAnyRole(['admin', 'staf'])),
             ]);
     }
 
@@ -134,6 +145,11 @@ class MahasiswasRelationManager extends RelationManager
                     ->label('SKS')
                     ->numeric()
                     ->sortable(),
+
+                TextColumn::make('pivot.status')
+                    ->badge()
+                    ->label('Status'),
+
                 TextColumn::make('semester')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
