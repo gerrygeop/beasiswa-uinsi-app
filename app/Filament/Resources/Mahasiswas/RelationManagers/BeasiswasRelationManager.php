@@ -29,11 +29,11 @@ class BeasiswasRelationManager extends RelationManager
                         Components\TextInput::make('nama_beasiswa')
                             ->required(),
 
-                        Components\Select::make('jenis_beasiswa')
-                            ->options([
-                                'Prestasi' => 'Prestasi',
-                                'Tidak mampu' => 'Tidak mampu',
-                            ])
+                        Components\Select::make('kategori_id')
+                            ->relationship('kategori', 'nama_kategori')
+                            ->multiple()
+                            ->preload()
+                            ->searchable()
                             ->required(),
 
                         Components\TextInput::make('lembaga_penyelenggara')
@@ -49,6 +49,8 @@ class BeasiswasRelationManager extends RelationManager
                         Components\Textarea::make('deskripsi')
                             ->columnSpanFull(),
                     ])
+                    ->columns(2)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -59,7 +61,7 @@ class BeasiswasRelationManager extends RelationManager
                 Section::make()
                     ->schema([
                         TextEntry::make('nama_beasiswa'),
-                        TextEntry::make('jenis_beasiswa'),
+                        TextEntry::make('kategori.nama_kategori'),
                         TextEntry::make('lembaga_penyelenggara'),
                         TextEntry::make('besar_beasiswa')
                             ->numeric(),
@@ -96,7 +98,7 @@ class BeasiswasRelationManager extends RelationManager
                 TextColumn::make('nama_beasiswa')
                     ->searchable(),
 
-                TextColumn::make('jenis_beasiswa')
+                TextColumn::make('kategori.nama_kategori')
                     ->searchable(),
 
                 TextColumn::make('lembaga_penyelenggara')
@@ -125,15 +127,23 @@ class BeasiswasRelationManager extends RelationManager
             ])
             ->filters([
                 TrashedFilter::make(),
-                SelectFilter::make('jenis_beasiswa')
-                    ->options([
-                        'prestasi' => 'Prestasi',
-                        'tidak mampu' => 'Tidak mampu',
-                    ]),
+                SelectFilter::make('kategori_id')
+                    ->label('Kategori Beasiswa')
+                    ->relationship('kategori', 'nama_kategori'),
             ])
             ->headerActions([
                 Actions\CreateAction::make(),
-                Actions\AttachAction::make(),
+                Actions\AttachAction::make()
+                    ->preloadRecordSelect()
+                    ->action(function (array $data, Actions\AttachAction $action) {
+                        // Ambil record mahasiswa saat ini (owner)
+                        $mahasiswa = $this->getOwnerRecord();
+
+                        // Lakukan attach dengan menyertakan data pivot
+                        $mahasiswa->beasiswas()->attach($data['recordId'], [
+                            'tanggal_penerimaan' => now(),
+                        ]);
+                    }),
             ])
             ->recordActions([
                 Actions\ViewAction::make(),
@@ -155,5 +165,10 @@ class BeasiswasRelationManager extends RelationManager
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]));
+    }
+
+    public function isReadOnly(): bool
+    {
+        return false;
     }
 }

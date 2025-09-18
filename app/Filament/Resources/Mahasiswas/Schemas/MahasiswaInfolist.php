@@ -20,10 +20,15 @@ class MahasiswaInfolist
 
                         TextEntry::make('nama'),
                         TextEntry::make('email'),
+                        TextEntry::make('ttl')
+                            ->label('Tempat, Tanggal Lahir'),
                         TextEntry::make('no_hp'),
                         TextEntry::make('prodi'),
                         TextEntry::make('fakultas'),
                         TextEntry::make('angkatan'),
+                        TextEntry::make('sks')
+                            ->numeric(),
+                        TextEntry::make('semester'),
                         TextEntry::make('ip')
                             ->label('IP')
                             ->badge()

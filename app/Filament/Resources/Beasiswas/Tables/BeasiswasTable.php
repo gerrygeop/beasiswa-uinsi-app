@@ -23,7 +23,7 @@ class BeasiswasTable
                     ->sortable()
                     ->searchable(),
 
-                TextColumn::make('jenis_beasiswa')
+                TextColumn::make('kategori.nama_kategori')
                     ->searchable(),
 
                 TextColumn::make('lembaga_penyelenggara')

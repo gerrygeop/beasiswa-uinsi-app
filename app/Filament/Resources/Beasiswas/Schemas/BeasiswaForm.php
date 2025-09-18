@@ -17,11 +17,11 @@ class BeasiswaForm
                         Components\TextInput::make('nama_beasiswa')
                             ->required(),
 
-                        Components\Select::make('jenis_beasiswa')
-                            ->options([
-                                'Prestasi' => 'Prestasi',
-                                'Tidak mampu' => 'Tidak mampu',
-                            ])
+                        Components\Select::make('kategori_id')
+                            ->relationship('kategori', 'nama_kategori')
+                            ->multiple()
+                            ->searchable()
+                            ->preload()
                             ->required(),
 
                         Components\TextInput::make('lembaga_penyelenggara')

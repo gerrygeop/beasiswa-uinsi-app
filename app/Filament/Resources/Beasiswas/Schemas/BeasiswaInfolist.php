@@ -16,10 +16,11 @@ class BeasiswaInfolist
                 Section::make()
                     ->schema([
                         TextEntry::make('nama_beasiswa'),
-                        TextEntry::make('jenis_beasiswa'),
+                        TextEntry::make('kategori.nama_kategori'),
                         TextEntry::make('lembaga_penyelenggara'),
                         TextEntry::make('besar_beasiswa')
-                            ->numeric(),
+                            ->numeric()
+                            ->money('idr'),
                         TextEntry::make('periode'),
                         TextEntry::make('deskripsi')
                             ->placeholder('-')
