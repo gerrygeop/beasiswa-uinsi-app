@@ -43,7 +43,7 @@ class MahasiswaPolicy
      */
     public function update(User $user, Mahasiswa $mahasiswa): bool
     {
-        return $user->id === $mahasiswa->user_id;
+        return $user->hasAnyRole(['admin', 'staf']);
     }
 
     /**
